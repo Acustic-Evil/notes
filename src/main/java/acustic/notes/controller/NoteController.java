@@ -36,7 +36,7 @@ public class NoteController {
         return new ResponseEntity<>(noteService.updateNote(note.getId(), note.getText()), HttpStatus.OK);
     }
 
-    @GetMapping("/get_note")
+    @PostMapping("/get_note")
     public ResponseEntity<Notes> get_note(@RequestBody Long id) {
         if (id == null || noteService.getNote(id) == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
