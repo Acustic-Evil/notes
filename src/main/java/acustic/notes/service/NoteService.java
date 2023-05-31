@@ -1,17 +1,16 @@
 package acustic.notes.service;
 
 import acustic.notes.entity.NoteDTO;
-import acustic.notes.repository.NoteDAO;
+import acustic.notes.repository.INoteDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 
 @Service
 public class NoteService {
     @Autowired
-    NoteDAO noteDAO;
+    INoteDAO noteDAO;
 
     public NoteDTO updateNote(NoteDTO note) {
         noteDAO.update(note);
@@ -25,8 +24,7 @@ public class NoteService {
     }
 
     public NoteDTO createNote(NoteDTO note) {
-        noteDAO.save(note);
-        return note;
+        return noteDAO.save(note);
     }
 
     public NoteDTO getNote(Long id) {

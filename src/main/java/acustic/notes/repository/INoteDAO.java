@@ -7,7 +7,7 @@ import java.util.List;
 
 @Repository
 public interface INoteDAO {
-   void save(NoteDTO note);
+   NoteDTO save(NoteDTO note);
    void update(NoteDTO note);
    void delete(NoteDTO note);
    NoteDTO getById(Long id);

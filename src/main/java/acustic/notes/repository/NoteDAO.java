@@ -3,9 +3,14 @@ package acustic.notes.repository;
 import acustic.notes.entity.NoteDTO;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+import java.sql.PreparedStatement;
 import java.util.List;
+import java.util.Objects;
 
 @Repository
 public class NoteDAO implements INoteDAO {
@@ -29,9 +34,21 @@ public class NoteDAO implements INoteDAO {
     }
 
     @Override
-    public void save(NoteDTO note) {
+    public NoteDTO save(NoteDTO note) {
         String query = "INSERT INTO notes (title, text) VALUES (?, ?)";
-        jdbcTemplate.update(query, note.getTitle(), note.getText());
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        jdbcTemplate.update(connection -> {
+            PreparedStatement ps = connection.prepareStatement(query, new String[]{"id"});
+            ps.setString(1, note.getTitle());
+            ps.setString(2, note.getText());
+            return ps;
+        }, keyHolder);
+
+        Long generatedId = keyHolder.getKey().longValue();
+        note.setId(generatedId);
+
+        return note;
     }
 
     @Override
