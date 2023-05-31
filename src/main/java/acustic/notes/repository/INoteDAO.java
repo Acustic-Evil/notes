@@ -9,7 +9,7 @@ import java.util.List;
 public interface INoteDAO {
    NoteDTO save(NoteDTO note);
    void update(NoteDTO note);
-   void delete(NoteDTO note);
+   boolean delete(NoteDTO note);
    NoteDTO getById(Long id);
    List<NoteDTO> getAllByOrderByIdAsc();
 }

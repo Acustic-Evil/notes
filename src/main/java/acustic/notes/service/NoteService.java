@@ -17,10 +17,9 @@ public class NoteService {
         return note;
     }
 
-    public Boolean deleteNote(Long id) {
+    public boolean deleteNote(Long id) {
         NoteDTO note = noteDAO.getById(id);
-        noteDAO.delete(note);
-        return true;
+        return noteDAO.delete(note);
     }
 
     public NoteDTO createNote(NoteDTO note) {

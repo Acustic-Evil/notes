@@ -1,6 +1,7 @@
 package acustic.notes.repository;
 
 import acustic.notes.entity.NoteDTO;
+import acustic.notes.exception.NoteNotFoundException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -16,6 +17,7 @@ public class NoteDAO implements INoteDAO {
 
     private final JdbcTemplate jdbcTemplate;
 
+
     public NoteDAO(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
@@ -23,7 +25,11 @@ public class NoteDAO implements INoteDAO {
     @Override
     public NoteDTO getById(Long id) {
         String query = "SELECT * FROM notes WHERE id = ?";
-        return jdbcTemplate.queryForObject(query, new Object[]{id}, new BeanPropertyRowMapper<>(NoteDTO.class));
+        List<NoteDTO> notes = jdbcTemplate.query(query, new Object[]{id}, new BeanPropertyRowMapper<>(NoteDTO.class));
+        if (notes.isEmpty()) {
+            throw new NoteNotFoundException("Note not found with ID: " + id);
+        }
+        return notes.get(0);
     }
 
     @Override
@@ -53,12 +59,20 @@ public class NoteDAO implements INoteDAO {
     @Override
     public void update(NoteDTO note) {
         String query = "UPDATE notes SET title = ?, text = ? WHERE id = ?";
-        jdbcTemplate.update(query, note.getTitle(), note.getText(), note.getId());
+        int rowsAffected = jdbcTemplate.update(query, note.getTitle(), note.getText(), note.getId());
+        if (rowsAffected == 0) {
+            throw new NoteNotFoundException("Note not found with ID: " + note.getId());
+        }
     }
 
     @Override
-    public void delete(NoteDTO note) {
+    public boolean delete(NoteDTO note) {
+        Long id = note.getId();
         String query = "DELETE FROM notes WHERE id = ?";
-        jdbcTemplate.update(query, note.getId());
+        int rowsAffected = jdbcTemplate.update(query, id);
+        if (rowsAffected == 0) {
+            throw new NoteNotFoundException("Note not found with ID: " + id);
+        }
+        return rowsAffected > 0;
     }
 }

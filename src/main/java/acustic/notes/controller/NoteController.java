@@ -1,6 +1,7 @@
 package acustic.notes.controller;
 
 import acustic.notes.entity.NoteDTO;
+import acustic.notes.exception.NoteNotFoundException;
 import acustic.notes.service.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,26 +23,30 @@ public class NoteController {
 
     @DeleteMapping("/delete_note")
     public ResponseEntity<Boolean> delete_note(@RequestBody Long id) {
-        if (id == null || noteService.getNote(id) == null) {
+        try {
+            return new ResponseEntity<>(noteService.deleteNote(id), HttpStatus.OK);
+        } catch (NoteNotFoundException ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(noteService.deleteNote(id), HttpStatus.OK);
     }
 
     @PostMapping("/update_note")
     public ResponseEntity<NoteDTO> update_note(@RequestBody NoteDTO note) {
-        if (note == null || noteService.getNote(note.getId()) == null || note.getId() == null) {
+        try {
+            return new ResponseEntity<>(noteService.updateNote(note), HttpStatus.OK);
+        } catch (NoteNotFoundException ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(noteService.updateNote(note), HttpStatus.OK);
     }
 
     @PostMapping("/get_note")
     public ResponseEntity<NoteDTO> get_note(@RequestBody Long id) {
-        if (id == null || noteService.getNote(id) == null) {
+        try {
+            return new ResponseEntity<>(noteService.getNote(id), HttpStatus.OK);
+        } catch (NoteNotFoundException ex) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(noteService.getNote(id), HttpStatus.OK);
+
     }
 
     @GetMapping("/get_all_notes")
