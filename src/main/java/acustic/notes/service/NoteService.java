@@ -42,7 +42,7 @@ public class NoteService {
     }
 
     public List<Notes> getAllNotes() {
-        return noteRepo.findAllByOrderByIdAsc();
+        return noteRepo.getAllByOrderByIdAsc();
     }
 
 }
