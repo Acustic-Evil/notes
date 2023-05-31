@@ -10,7 +10,7 @@ import lombok.*;
 @Builder
 @Entity
 @Table
-public class Notes {
+public class NoteDTO {
 
     // 2 next annotations are for incrementing id by 1 and not by 50 (default)
     @SequenceGenerator(name = "notes_SEQ", sequenceName = "notes_SEQ", allocationSize = 1)
@@ -21,4 +21,6 @@ public class Notes {
 
     @Column(columnDefinition = "TEXT")
     private String text;
+
+    private String title;
 }

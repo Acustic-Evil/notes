@@ -1,6 +1,6 @@
 package acustic.notes.controller;
 
-import acustic.notes.entity.Notes;
+import acustic.notes.entity.NoteDTO;
 import acustic.notes.service.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,7 +16,7 @@ public class NoteController {
     NoteService noteService;
 
     @PostMapping("/new_note")
-    public ResponseEntity<Notes> new_note(@RequestBody String text) {
+    public ResponseEntity<NoteDTO> new_note(@RequestBody String text) {
         return new ResponseEntity<>(noteService.createNote(text), HttpStatus.OK);
     }
 
@@ -29,7 +29,7 @@ public class NoteController {
     }
 
     @PostMapping("/update_note")
-    public ResponseEntity<Notes> update_note(@RequestBody Notes note) {
+    public ResponseEntity<NoteDTO> update_note(@RequestBody NoteDTO note) {
         if (note == null || noteService.getNote(note.getId()) == null || note.getId() == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -37,7 +37,7 @@ public class NoteController {
     }
 
     @PostMapping("/get_note")
-    public ResponseEntity<Notes> get_note(@RequestBody Long id) {
+    public ResponseEntity<NoteDTO> get_note(@RequestBody Long id) {
         if (id == null || noteService.getNote(id) == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
@@ -45,7 +45,7 @@ public class NoteController {
     }
 
     @GetMapping("/get_all_notes")
-    public List<Notes> get_all() {
+    public List<NoteDTO> get_all() {
         return noteService.getAllNotes();
     }
 }
