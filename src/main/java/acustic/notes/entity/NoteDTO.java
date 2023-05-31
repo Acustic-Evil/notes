@@ -14,7 +14,8 @@ public class NoteDTO {
 
     // 2 next annotations are for incrementing id by 1 and not by 50 (default)
     @SequenceGenerator(name = "notes_SEQ", sequenceName = "notes_SEQ", allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "notes_SEQ")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(columnDefinition = "SERIAL")
     @Id
     private Long id;
 
