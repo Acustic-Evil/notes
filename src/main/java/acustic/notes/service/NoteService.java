@@ -3,7 +3,6 @@ package acustic.notes.service;
 import acustic.notes.entity.Notes;
 import acustic.notes.repository.NoteRepo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,7 +14,7 @@ public class NoteService {
     NoteRepo noteRepo;
 
     public Notes updateNote(Long id, String text) {
-        Notes note = noteRepo.findById(id);
+        Notes note = noteRepo.getById(id);
         if (Objects.equals(note.getText(), text)) {
             return note;
         }
@@ -25,7 +24,7 @@ public class NoteService {
     }
 
     public Boolean deleteNote(Long id) {
-        Notes note = noteRepo.findById(id);
+        Notes note = noteRepo.getById(id);
         noteRepo.delete(note);
         return true;
     }
@@ -38,11 +37,11 @@ public class NoteService {
     }
 
     public Notes getNote(Long id) {
-        return noteRepo.findById(id);
+        return noteRepo.getById(id);
     }
 
     public List<Notes> getAllNotes() {
-        return noteRepo.findAllByOrderByIdAsc();
+        return noteRepo.getAllByOrderByIdAsc();
     }
 
 }
