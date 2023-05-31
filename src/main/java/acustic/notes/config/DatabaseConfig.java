@@ -20,6 +20,5 @@ public class DatabaseConfig {
         return dataSource;
     }
 
-    // Other configuration beans and methods...
 }
 

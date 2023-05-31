@@ -3,7 +3,6 @@ package acustic.notes.repository;
 import acustic.notes.entity.NoteDTO;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.PreparedStatementCreator;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
@@ -45,7 +44,7 @@ public class NoteDAO implements INoteDAO {
             return ps;
         }, keyHolder);
 
-        Long generatedId = keyHolder.getKey().longValue();
+        Long generatedId = Objects.requireNonNull(keyHolder.getKey()).longValue();
         note.setId(generatedId);
 
         return note;
