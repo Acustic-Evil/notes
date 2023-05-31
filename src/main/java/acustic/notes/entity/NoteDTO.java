@@ -9,7 +9,7 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 @Entity
-@Table
+@Table(name = "notes")
 public class NoteDTO {
 
     // 2 next annotations are for incrementing id by 1 and not by 50 (default)

@@ -13,12 +13,13 @@ public class NoteService {
     @Autowired
     NoteRepo noteRepo;
 
-    public NoteDTO updateNote(Long id, String text) {
-        NoteDTO note = noteRepo.getById(id);
-        if (Objects.equals(note.getText(), text)) {
+    public NoteDTO updateNote(NoteDTO upd_note) {
+        NoteDTO note = noteRepo.getById(upd_note.getId());
+        if (Objects.equals(note.getText(), upd_note.getText())) {
             return note;
         }
-        note.setText(text);
+        note.setText(upd_note.getText());
+        note.setTitle(upd_note.getTitle());
         noteRepo.save(note);
         return note;
     }
@@ -29,9 +30,7 @@ public class NoteService {
         return true;
     }
 
-    public NoteDTO createNote(String text) {
-        NoteDTO note = new NoteDTO();
-        note.setText(text);
+    public NoteDTO createNote(NoteDTO note) {
         noteRepo.save(note);
         return note;
     }

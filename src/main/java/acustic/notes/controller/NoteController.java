@@ -16,8 +16,8 @@ public class NoteController {
     NoteService noteService;
 
     @PostMapping("/new_note")
-    public ResponseEntity<NoteDTO> new_note(@RequestBody String text) {
-        return new ResponseEntity<>(noteService.createNote(text), HttpStatus.OK);
+    public ResponseEntity<NoteDTO> new_note(@RequestBody NoteDTO note) {
+        return new ResponseEntity<>(noteService.createNote(note), HttpStatus.OK);
     }
 
     @DeleteMapping("/delete_note")
@@ -30,10 +30,10 @@ public class NoteController {
 
     @PostMapping("/update_note")
     public ResponseEntity<NoteDTO> update_note(@RequestBody NoteDTO note) {
-        if (note == null || noteService.getNote(note.getId()) == null || note.getId() == null) {
+        if (note == null || note.getId() == null || noteService.getNote(note.getId()) == null) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(noteService.updateNote(note.getId(), note.getText()), HttpStatus.OK);
+        return new ResponseEntity<>(noteService.updateNote(note), HttpStatus.OK);
     }
 
     @PostMapping("/get_note")
